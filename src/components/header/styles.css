@@ -1,0 +1,14 @@
+
+.header {
+    background-color: #FF830B;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+    padding: 3rem;
+}
+
+@media only screen and (max-width: 600px) {
+    .header {
+        display: none;
+    }
+}
