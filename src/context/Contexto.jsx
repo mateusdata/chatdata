@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
     setLoad(false);
   }, []);
 
-  const login = (email, nome, ) => {
+  const login = (email, nome) => {
     let arrayColor = [
       "#d31b1b",
       "#b615d6",
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
       "#0670a1",
     
     ]
-    
+    console.log("sera que pegou:" + email + nome);
     let numberRandomic = Math.floor(Math.random() * (arrayColor.length -1));
    
     let colorUser = arrayColor[numberRandomic];

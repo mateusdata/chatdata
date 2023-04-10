@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider, Contexto } from "../context/Contexto";
 import LoginForm from "../pages/login/login";
 import Talks from "../pages/talks/talks";
+import { HashLoader } from "react-spinners";
 
 
 const Rotas = () => {
@@ -11,7 +12,9 @@ const Rotas = () => {
     const { autenticado, load } = useContext(Contexto);
 
     if (load) {
-      return <div style={{ color: "blue" }} className="loading">Carregando...</div>
+      return <div style={{display:"flex", color: "blue", justifyContent:"center",alignItems:"center", height:"100vh" }} className="loading">
+          <HashLoader color="#36d7b7"  size={100}/>
+         </div>
     }
     if (!autenticado) {
       return <Navigate to={"/login" || "/test"} />

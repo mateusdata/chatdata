@@ -18,14 +18,14 @@ import { Contexto } from "../../context/Contexto";
 function Talks() {
   const [mensage, setMensage] = useState("");
   const [arrayTalks, setArrayTalks] = useState([]);
-  const [number, setNumber] = useState(0);
+  const [number, setNumber] = useState(null);
   const [changeColor, setChangeColor] = useState(false);
   const [changeemogin, setChangeemogin] = useState(false);
   const [isTrueMensagem, setIstruMensage] = useState(false);
   const { user, setUser } = useContext(Contexto);
   const [mutado, setMutado] = useState(true)
 
-  
+
   useEffect(() => {
     const recovereUser = localStorage.getItem("usuario");
     if (!("Notification" in window)) {
@@ -43,6 +43,14 @@ function Talks() {
     // eslint-disable-next-line
   }, [arrayTalks]);
 
+
+  useEffect(() => {
+
+    let numberRandomic = Math.floor(Math.random() * images.images.length);
+    setNumber(numberRandomic)
+
+  }, [])
+
   const deleteTalks = (id) => {
     Axios.delete(`https://chat-data-api.vercel.app/apagar/${id}`);
   };
@@ -56,10 +64,10 @@ function Talks() {
     }
     setChangeColor(true);
   };
-  const silenciar = ()=>{
+  const silenciar = () => {
     setMutado(false);
     alert(mutado)
-   } 
+  }
 
   const deleteAllTalks = () => {
     setArrayTalks("");
@@ -73,7 +81,7 @@ function Talks() {
       );
     }
   };
- 
+
   const sendMensage = (e) => {
     e.preventDefault();
     if (mensage) {
@@ -89,7 +97,7 @@ function Talks() {
       });
       //let seconds = currentTime.getSeconds().toLocaleString('pt-BR', {minimumIntegerDigits: 2, useGrouping:false});
       const hora = `${hours}:${minutes}`;
-      
+
       Axios.post("https://chat-data-api.vercel.app/send", {
         talk: mensage,
         time: hora,
@@ -109,12 +117,15 @@ function Talks() {
         className="container"
         style={{
           backgroundImage: ` url( ${images.images[number]})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
         }}
       >
         <header>
           <h1>ChatData</h1>
 
-          <AccountMenu nome={user.nome}  silenciar={silenciar} picture={user.picture}changeImage={changeImage} user={user.nome} />
+          <AccountMenu nome={user.nome} silenciar={silenciar} picture={user.picture} changeImage={changeImage} user={user.nome} />
         </header>
 
         {
@@ -156,9 +167,9 @@ function Talks() {
                       onClick={() =>
                         alert(
                           "Usuario: " +
-                            item.currentUser +
-                            "\nemail: " +
-                            item.phoneUser
+                          item.currentUser +
+                          "\nemail: " +
+                          item.phoneUser
                         )
                       }
                       style={{
@@ -167,12 +178,12 @@ function Talks() {
                           : "blue",
                       }}
                     >
-                      
+
                       {!(user.nome === item.currentUser)
                         ? item.currentUser
                         : "Eu"}
                     </b>
-                   
+
                     <br />
                     {item.talk}
                     {isTrueMensagem && (
@@ -203,7 +214,7 @@ function Talks() {
                         }}
                       />
                       <span className="hora">{item.time}</span>
-                      
+
                     </span>
                   </p>
                 </div>
@@ -218,7 +229,7 @@ function Talks() {
                 }}
               >
                 <p className="fa fa-lock"></p>
-                 Olá {user.nome} Seja bem-vindo ao Chat data, converse com seus amigos nesse chat-group.
+                Olá {user.nome} Seja bem-vindo ao Chat data, converse com seus amigos nesse chat-group.
               </div>
             )}
           </div>
