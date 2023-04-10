@@ -3,9 +3,9 @@ import { useEffect } from "react";
 import "./styles.css";
 import { useNavigate } from "react-router-dom";
 import { Contexto } from "../../context/Contexto";
-import Header from "../../components/header/header";
 import { HashLoader } from "react-spinners";
 import axios from "axios";
+import HeaderLogin from "../../components/herder login/header";
 function LoginForm() {
   const [load, setLoad] = useState(true);
   const [nome, setNome] = useState("")
@@ -39,7 +39,7 @@ function LoginForm() {
     e.preventDefault();
     if (fazerLogin) {
       if (nome && email && senha) {
-        axios.post("http://localhost:3001/login", {
+        axios.post("https://chat-data-api.vercel.app/login", {
           nome,
           email,
           senha,
@@ -57,7 +57,7 @@ function LoginForm() {
       }
       return;
     }
-    axios.post("http://localhost:3001/login", {
+    axios.post("https://chat-data-api.vercel.app/login", {
       nome,
       email,
       senha,
@@ -86,10 +86,10 @@ function LoginForm() {
   return (
     <div >
       <div className="login-container">
-      <Header>
+      <HeaderLogin>
        
 
-      </Header>
+      </HeaderLogin>
         <div className="login">
           <h1>{fazerLogin ? "Inscreva-se no Chatdata" : "Fazer Login  no Chatdata"}</h1>
           <form className="formulario" onSubmit={handleSubmit}>

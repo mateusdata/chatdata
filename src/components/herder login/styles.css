@@ -1,0 +1,16 @@
+
+.header {
+    background-color: transparent;
+    border-radius: 0;
+    height: 15%;
+    width: 150%;
+    padding: 3rem;
+    position: relative;
+    bottom: 22%;
+}
+
+@media only screen and (max-width: 600px) {
+    .header {
+        display: none;
+    }
+}
