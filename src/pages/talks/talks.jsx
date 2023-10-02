@@ -51,9 +51,9 @@ function Talks() {
 
   }, [])
 
-  const deleteTalks = (id) => {
+  /*const deleteTalks = (id) => {
     Axios.delete(`https://chat-data-api.vercel.app/apagar/${id}`);
-  };
+  };*/
 
   const changeImage = () => {
     let numberRandomic = Math.floor(Math.random() * images.images.length);
@@ -128,7 +128,7 @@ function Talks() {
           <AccountMenu nome={user.nome} silenciar={silenciar} picture={user.picture} changeImage={changeImage} user={user.nome} />
         </header>
 
-        {
+        { false &&
           <Button
             onClick={deleteAllTalks}
             variant="outlined"
@@ -186,7 +186,7 @@ function Talks() {
 
                     <br />
                     {item.talk}
-                    {isTrueMensagem && (
+                     {false && isTrueMensagem && (
                       <DeleteIcon
                         onClick={() => {
                           deleteTalks(item.id);
