@@ -52,7 +52,7 @@ function Talks() {
   }, [])
 
   /*const deleteTalks = (id) => {
-    Axios.delete(`https://chat-data-api.vercel.app/apagar/${id}`);
+    //Axios.delete(`https://chat-data-api.vercel.app/apagar/${id}`);
   };*/
 
   const changeImage = () => {
@@ -70,9 +70,9 @@ function Talks() {
   }
 
   const deleteAllTalks = () => {
-    setArrayTalks("");
+   // setArrayTalks("");
     if (arrayTalks.length) {
-      Axios.delete("https://chat-data-api.vercel.app/delete").then(
+      //Axios.delete("https://chat-data-api.vercel.app/delete").then(
         (response) => {
           new Audio(audio2).play();
           setArrayTalks("");
