@@ -5,7 +5,7 @@ import Axios from "axios";
 import { Button } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 //import audio from "../../components/audio/audio1.mp3";
-import audio2 from "../../components/audio/audio2.mp3";
+//import audio2 from "../../components/audio/audio2.mp3";
 import audio3 from "../../components/audio/audio3.mp3";
 import images from "../../components/array images/images";
 import emogins from "../../components/array emogins/emogin";
@@ -13,6 +13,7 @@ import Header from "../../components/header/header";
 
 import AccountMenu from "../../components/barra lateral/barraLateral";
 import { Contexto } from "../../context/Contexto";
+import { Popconfirm } from "antd";
 
 
 function Talks() {
@@ -51,9 +52,9 @@ function Talks() {
 
   }, [])
 
-  /*const deleteTalks = (id) => {
-    //Axios.delete(`https://chat-data-api.vercel.app/apagar/${id}`);
-  };*/
+  const deleteTalks = (id) => {
+    Axios.delete(`https://chat-data-api.vercel.app/apagar/${id}`);
+  };
 
   const changeImage = () => {
     let numberRandomic = Math.floor(Math.random() * images.images.length);
@@ -70,16 +71,18 @@ function Talks() {
   }
 
   const deleteAllTalks = () => {
-   // setArrayTalks("");
-    if (arrayTalks.length) {
-      //Axios.delete("https://chat-data-api.vercel.app/delete").then(
-        (response) => {
-          new Audio(audio2).play();
-          setArrayTalks("");
-          alert("Conversas apagadas");
-        }
-      );
-    }
+    /*
+    // setArrayTalks("");
+     if (arrayTalks.length) {
+       //Axios.delete("https://chat-data-api.vercel.app/delete").then(
+         (response) => {
+           new Audio(audio2).play();
+           setArrayTalks("");
+           alert("Conversas apagadas");
+         }
+       );
+     }
+    */
   };
 
   const sendMensage = (e) => {
@@ -116,7 +119,7 @@ function Talks() {
       <div
         className="container"
         style={{
-          backgroundImage: ` url( ${images.images[number]})`,
+          backgroundImage: ` url( ${images.images[1]})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -128,7 +131,7 @@ function Talks() {
           <AccountMenu nome={user.nome} silenciar={silenciar} picture={user.picture} changeImage={changeImage} user={user.nome} />
         </header>
 
-        { false &&
+        {false &&
           <Button
             onClick={deleteAllTalks}
             variant="outlined"
@@ -141,84 +144,97 @@ function Talks() {
         {/*<CardUser/>*/}
         <div className="mensagemm">
           <div className={arrayTalks.length ? "mesagemON" : "mesagemOF"}>
-            {arrayTalks &&
-              arrayTalks &&
-              arrayTalks.map((item, index) => (
-                <div
-                  key={item.id}
-                  className="englobaP"
+            {arrayTalks?.map((item, index) => (
+              <div
+                key={item.id}
+                className="englobaP"
+                style={{
+                  display: "flex",
+                  justifyContent: item.phoneUser === user.email && "flex-end",
+                }}
+              >
+                <p
+                  onClick={() => {
+                    !isTrueMensagem
+                      ? setIstruMensage(true)
+                      : setIstruMensage(false);
+                  }}
+                  className="message sent"
                   style={{
-                    display: "flex",
-                    justifyContent: item.phoneUser === user.email && "flex-end",
+                    overflowWrap: "break-word",
+                    backgroundColor: item.phoneUser === user.email && "white",
                   }}
                 >
-                  <p
-                    onClick={() => {
-                      !isTrueMensagem
-                        ? setIstruMensage(true)
-                        : setIstruMensage(false);
-                    }}
-                    className="message sent"
+                  <b
+                    onClick={() =>
+                      alert(
+                        "Usuario: " +
+                        item.currentUser +
+                        "\nemail: " +
+                        item.phoneUser
+                      )
+                    }
                     style={{
-                      backgroundColor: item.phoneUser === user.email && "white",
+                      color: !(user.nome === item.currentUser)
+                        ? user.colorUser
+                        : "blue",
                     }}
                   >
-                    <b
-                      onClick={() =>
-                        alert(
-                          "Usuario: " +
-                          item.currentUser +
-                          "\nemail: " +
-                          item.phoneUser
-                        )
-                      }
+
+                    {!(user.nome === item.currentUser)
+                      ? item.currentUser
+                      : "Voce"}
+                  </b>
+
+                  <br />
+
+                  <pre style={{ overflowWrap: "break-word" }}> {item.talk}</pre>
+
+                  <span className="status">
+                    <CheckIcon
                       style={{
-                        color: !(user.nome === item.currentUser)
-                          ? user.colorUser
-                          : "blue",
+                        padding: "0",
+                        margin: "0",
+
+                        fontSize: "1.2rem",
                       }}
+                    />
+                    <CheckIcon
+                      style={{
+                        padding: "0",
+                        margin: "0",
+
+                        fontSize: "1.2rem",
+                        marginLeft: "-8px",
+                      }}
+                    />
+                    <span className="hora">{item.time}</span>
+
+
+
+
+                    <Popconfirm
+                      title="Apagar mensagem"
+                      description="Tem certeza que deseja apagar essa mensagem?"
+                      onConfirm={()=>deleteTalks(item.id)}
+                      okText="Yes"
+                      cancelText="No"
                     >
+                      {
+                        <DeleteIcon
 
-                      {!(user.nome === item.currentUser)
-                        ? item.currentUser
-                        : "Eu"}
-                    </b>
+                          onClick={() => {
 
-                    <br />
-                    {item.talk}
-                     {false && isTrueMensagem && (
-                      <DeleteIcon
-                        onClick={() => {
-                          deleteTalks(item.id);
-                          new Audio(audio3).play();
-                        }}
-                        style={{ color: "red" }}
-                      />
-                    )}
-                    <span className="status">
-                      <CheckIcon
-                        style={{
-                          padding: "0",
-                          margin: "0",
-
-                          fontSize: "1.2rem",
-                        }}
-                      />
-                      <CheckIcon
-                        style={{
-                          padding: "0",
-                          margin: "0",
-
-                          fontSize: "1.2rem",
-                          marginLeft: "-8px",
-                        }}
-                      />
-                      <span className="hora">{item.time}</span>
-
-                    </span>
-                  </p>
-                </div>
-              ))}
+                            new Audio(audio3).play();
+                          }}
+                          style={{ color: "#f46161", height: 20 }}
+                        />
+                      }
+                    </Popconfirm>
+                  </span>
+                </p>
+              </div>
+            ))}
             {arrayTalks.length === 0 && (
               <div
                 id="whatsapp-message"
@@ -238,7 +254,7 @@ function Talks() {
           <form onSubmit={sendMensage}>
             <textarea
               value={mensage}
-              placeholder={`${emogins.arrayEmogins[changeemogin]} Mensagem...`}
+              placeholder={`${false ? emogins.arrayEmogins[changeemogin]:""} Mensagem...:`}
               onChange={(e) => {
                 setMensage(e.target.value);
               }}
