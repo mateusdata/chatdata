@@ -2,7 +2,6 @@ import SendIcon from "@mui/icons-material/Send";
 import { useContext, useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Axios from "axios";
-import { Button } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 //import audio from "../../components/audio/audio1.mp3";
 //import audio2 from "../../components/audio/audio2.mp3";
@@ -10,10 +9,12 @@ import audio3 from "../../components/audio/audio3.mp3";
 import images from "../../components/array images/images";
 import emogins from "../../components/array emogins/emogin";
 import Header from "../../components/header/header";
+import { Tooltip, Button, Popover } from 'antd';
 
 import AccountMenu from "../../components/barra lateral/barraLateral";
 import { Contexto } from "../../context/Contexto";
 import { Popconfirm } from "antd";
+import GlobalLayout from "../../components/globalLayout.js/globalLayout";
 
 
 function Talks() {
@@ -114,159 +115,25 @@ function Talks() {
   };
 
   return (
-    <>
-      <Header />
-      <div
-        className="container"
-        style={{
-          backgroundImage: ` url( ${images.images[1]})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <header>
-          <h1>ChatData</h1>
+    <GlobalLayout>
+      <div className=" w-full  flex ">
+        <div className="flex flex-col w-[100%]  justify-center items-center ">
+          {arrayTalks?.map((item, index) => (
+            <div className={`w-[80%] p-0  flex ${user.nome===item.currentUser? "justify-end": "justify-start"} p-2  `}>
 
-          <AccountMenu nome={user.nome} silenciar={silenciar} picture={user.picture} changeImage={changeImage} user={user.nome} />
-        </header>
-
-        {false &&
-          <Button
-            onClick={deleteAllTalks}
-            variant="outlined"
-            style={{ color: !!arrayTalks.length && "red", border: "none" }}
-            startIcon={<DeleteIcon />}
-          >
-            Apagar conversa
-          </Button>
-        }
-        {/*<CardUser/>*/}
-        <div className="mensagemm">
-          <div className={arrayTalks.length ? "mesagemON" : "mesagemOF"}>
-            {arrayTalks?.map((item, index) => (
-              <div
-                key={item.id}
-                className="englobaP"
-                style={{
-                  display: "flex",
-                  justifyContent: item.phoneUser === user.email && "flex-end",
-                }}
-              >
-                <p
-                  onClick={() => {
-                    !isTrueMensagem
-                      ? setIstruMensage(true)
-                      : setIstruMensage(false);
-                  }}
-                  className="message sent"
-                  style={{
-                    overflowWrap: "break-word",
-                    backgroundColor: item.phoneUser === user.email && "white",
-                  }}
-                >
-                  <b
-                    onClick={() =>
-                      alert(
-                        "Usuario: " +
-                        item.currentUser +
-                        "\nemail: " +
-                        item.phoneUser
-                      )
-                    }
-                    style={{
-                      color: !(user.nome === item.currentUser)
-                        ? user.colorUser
-                        : "blue",
-                    }}
-                  >
-
-                    {!(user.nome === item.currentUser)
-                      ? item.currentUser
-                      : "Voce"}
-                  </b>
-
-                  <br />
-
-                  <pre style={{ overflowWrap: "break-word" }}> {item.talk}</pre>
-
-                  <span className="status">
-                    <CheckIcon
-                      style={{
-                        padding: "0",
-                        margin: "0",
-
-                        fontSize: "1.2rem",
-                      }}
-                    />
-                    <CheckIcon
-                      style={{
-                        padding: "0",
-                        margin: "0",
-
-                        fontSize: "1.2rem",
-                        marginLeft: "-8px",
-                      }}
-                    />
-                    <span className="hora">{item.time}</span>
-
-
-
-
-                    <Popconfirm
-                      title="Apagar mensagem"
-                      description="Tem certeza que deseja apagar essa mensagem?"
-                      onConfirm={()=>deleteTalks(item.id)}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      {
-                        <DeleteIcon
-
-                          onClick={() => {
-
-                            new Audio(audio3).play();
-                          }}
-                          style={{ color: "#f46161", height: 20 }}
-                        />
-                      }
-                    </Popconfirm>
-                  </span>
-                </p>
+              <div className="flex w-[50%] flex-col p-5 rounded-2xl shadow-md bg-[#D9FDD3]  ">
+                <p>{!(user.nome === item.currentUser) ? item.currentUser : "Voce"}</p>
+                <pre>{item.talk}</pre>
+            
+                <p>{item.time}</p>
               </div>
-            ))}
-            {arrayTalks.length === 0 && (
-              <div
-                id="whatsapp-message"
-                style={{
-                  display: "flex",
-                  gap: "0.2rem",
-                  borderRadius: "0.5rem",
-                }}
-              >
-                <p className="fa fa-lock"></p>
-                Olá {user.nome} Seja bem-vindo ao Chat data, converse com seus amigos nesse chat-group.
-              </div>
-            )}
-          </div>
+
+            </div>
+          ))}
+
         </div>
-        <main>
-          <form onSubmit={sendMensage}>
-            <textarea
-              value={mensage}
-              placeholder={`${false ? emogins.arrayEmogins[changeemogin]:""} Mensagem...:`}
-              onChange={(e) => {
-                setMensage(e.target.value);
-              }}
-            ></textarea>
-
-            <button onSubmit={sendMensage} type="submit">
-              <SendIcon />
-            </button>
-          </form>
-        </main>
       </div>
-    </>
+    </GlobalLayout>
   );
 }
 
