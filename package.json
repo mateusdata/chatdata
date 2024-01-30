@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^5.2.6",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@heroicons/react": "^2.1.1",

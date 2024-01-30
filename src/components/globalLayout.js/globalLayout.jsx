@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -7,7 +7,7 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons';
 import SendIcon from "@mui/icons-material/Send";
-import { Layout, Menu, Button, theme, Input } from 'antd';
+import { Layout, Menu, Button, theme, Input, Grid } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
 import Search from 'antd/es/input/Search';
 import { Contexto } from '../../context/Contexto';
@@ -20,8 +20,17 @@ import TextArea from 'antd/es/input/TextArea';
 const { Header, Sider, Content } = Layout;
 const GlobalLayout = ({ children }) => {
   const { user, logout } = useContext(Contexto);
-
+  const screens = Grid.useBreakpoint();
   const [collapsed, setCollapsed] = useState(false);
+
+  useEffect(() => {
+    if (!screens.sm) {
+      setCollapsed(true);
+    } else {
+      setCollapsed(false);
+    }
+  }, [screens]);
+  
   const [mensage, setMensage] = useState()
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -60,34 +69,43 @@ const GlobalLayout = ({ children }) => {
 
   return (
     <Layout>
-      <Sider className='bg-red-600 h-screen  w-80' trigger={null} collapsible collapsed={collapsed}>
-        <div className="demo-logo-vertical" />
-        <Menu
-          theme="light"
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          className='bg-gray-50  h-full'
-          items={[
-            {
-              key: '1',
-              icon: <UserOutlined />,
-              label: 'Chatdata v.2.0',
-            },
-            {
-              key: '2',
-              icon: <VideoCameraOutlined />,
-              label: 'Conversa principal',
-            },
-            {
-              key: '3',
-              icon: <UploadOutlined  style={{color:"red"}}/>,
-              label: 'Sair',
-              onClick:()=>{logout()}
-            },
-          ]}
-        />
-      </Sider>
-      <Layout>
+      { screens.sm && (
+  <Sider
+    className='bg-red-600 h-screen  w-80'
+    trigger={null}
+    collapsible
+    collapsed={collapsed}
+    collapsedWidth={0}
+  >
+    <div className="demo-logo-vertical" />
+    <Menu
+      theme="light"
+      mode="inline"
+      defaultSelectedKeys={['1']}
+      className='bg-gray-50  h-full'
+      items={[
+        {
+          key: '1',
+          icon: <UserOutlined />,
+          label: 'Chatdata v.2.0',
+        },
+        {
+          key: '2',
+          icon: <VideoCameraOutlined />,
+          label: 'Conversa principal',
+        },
+        {
+          key: '3',
+          icon: <UploadOutlined  style={{color:"red"}}/>,
+          label: 'Sair',
+          onClick:()=>{logout()}
+        },
+      ]}
+    />
+  </Sider>
+)}
+
+      <Layout className='min-h-[97vh]'>
         <Header
           style={{
             padding: 0,
@@ -106,7 +124,7 @@ const GlobalLayout = ({ children }) => {
           />
         </Header>
         <Content
-          className='max-h-[100%] h-2 p-0 overflow-y-auto  overflow-x-hidden'
+          className={`max-h-[100%] h-2  p-0 overflow-y-auto  overflow-x-hidden`}
         >
           {children}
 
@@ -119,15 +137,15 @@ const GlobalLayout = ({ children }) => {
               placeholder={`Mensagem...`}
               onChange={(e) => setMensage(e.target.value)}
               value={mensage}
-              className="mb-5 w-11-12  max-h-s "
+              className="mb-5 w-11-12 text-xl max-h-s "
               autoSize={{ minRows: 10, maxRows: 50 }}
               style={{ whiteSpace: 'pre-wrap' }}
             />}
 
 
-            <TextArea onChange={(e) => setMensage(e.target.value)}
+            <TextArea onChange={(e) => setMensage(e.target.value.trim())}
               value={mensage}
-              className="mb-5 w-11-12  max-h-s w-full sm:w-[60%] lg:w-[50%]"
+              className="mb-5 w-11-12 flex flex-col text-center   max-h-s w-full sm:w-[60%] lg:w-[50%]"
               autoSize={{ minRows: 2, maxRows: 50 }}
               onKeyUp={handleKeyPress}
               rows={1} placeholder="Mensagem" maxLength={5000} />
