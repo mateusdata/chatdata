@@ -12,6 +12,7 @@ import { Footer } from 'antd/es/layout/layout';
 import Search from 'antd/es/input/Search';
 import { Contexto } from '../../context/Contexto';
 import axios from 'axios';
+import TextArea from 'antd/es/input/TextArea';
 
 
 
@@ -27,7 +28,7 @@ const GlobalLayout = ({ children }) => {
   } = theme.useToken();
 
   const sendMensage = (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     if (mensage) {
       setMensage("");
       const currentTime = new Date();
@@ -50,7 +51,12 @@ const GlobalLayout = ({ children }) => {
       });
     }
   }
+  const handleKeyPress = (event) => {
+    if (event?.key === 'Enter') {
 
+      sendMensage();
+    }
+  };
 
   return (
     <Layout>
@@ -105,21 +111,32 @@ const GlobalLayout = ({ children }) => {
 
         </Content>
         <div className='flex justify-center items-center'>
-        <form onSubmit={sendMensage} className='w-11/12 flex  gap-4 flex-nowrap justify-center itens-center'>
-          <Input
-            prefix="Mensagem"
-            placeholder={`Mensagem...`}
-            onChange={(e) => setMensage(e.target.value)}
-            value={mensage}
-            className="mb-5 w-11-12 flex-1"
-          />
+          <form onSubmit={sendMensage} className='w-11/12 flex  gap-4 flex-nowrap justify-center itens-center'>
+            {false && <Input
+              type='textarea'
+              prefix="Mensagem"
+              placeholder={`Mensagem...`}
+              onChange={(e) => setMensage(e.target.value)}
+              value={mensage}
+              className="mb-5 w-11-12  max-h-s "
+              autoSize={{ minRows: 10, maxRows: 50 }}
+              style={{ whiteSpace: 'pre-wrap' }}
+            />}
 
-          {false && <button className='flex justify-center itens-center   rounded-3xl h-5 bg-green-500 shadow-xl w-36 ' type="submit">
-            <SendIcon className='top-3'  type="submit"/>
-          </button>}
-        </form>
+
+            <TextArea onChange={(e) => setMensage(e.target.value)}
+              value={mensage}
+              className="mb-5 w-11-12  max-h-s w-full sm:w-[60%] lg:w-[50%]"
+              autoSize={{ minRows: 2, maxRows: 50 }}
+              onKeyUp={handleKeyPress}
+              rows={1} placeholder="Mensagem" maxLength={5000} />
+
+            {false && <button className='flex justify-center itens-center   rounded-3xl h-5 bg-green-500 shadow-xl w-36 ' type="submit">
+              <SendIcon className='top-3' type="submit" />
+            </button>}
+          </form>
         </div>
-        
+
       </Layout>
 
 
