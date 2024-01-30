@@ -4,6 +4,8 @@ import { AuthProvider, Contexto } from "../context/Contexto";
 import LoginForm from "../pages/login/login";
 import Talks from "../pages/talks/talks";
 import { HashLoader } from "react-spinners";
+import Welcome from "../pages/welcome/welcome";
+import { Spin } from "antd";
 
 
 const Rotas = () => {
@@ -13,11 +15,11 @@ const Rotas = () => {
 
     if (load) {
       return <div style={{display:"flex", color: "blue", justifyContent:"center",alignItems:"center", height:"100vh" }} className="loading">
-          <HashLoader color="#36d7b7"  size={100}/>
+       <Spin size="large" />
          </div>
     }
     if (!autenticado) {
-      return <Navigate to={"/login" || "/test"} />
+      return <Navigate to={"/welcome" || "/login"} />
     }
     return children
   }
@@ -26,6 +28,7 @@ const Rotas = () => {
       <AuthProvider>
         <Routes>
           <Route exact path="/" element={<Private><Talks /></Private>} />
+          <Route exact path="/welcome" element={<Welcome />} />
           <Route exact path="/login" element={<LoginForm />} />
         </Routes>
       </AuthProvider>

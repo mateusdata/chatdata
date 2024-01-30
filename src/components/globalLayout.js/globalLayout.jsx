@@ -19,7 +19,7 @@ import TextArea from 'antd/es/input/TextArea';
 
 const { Header, Sider, Content } = Layout;
 const GlobalLayout = ({ children }) => {
-  const { user, setUser } = useContext(Contexto);
+  const { user, logout } = useContext(Contexto);
 
   const [collapsed, setCollapsed] = useState(false);
   const [mensage, setMensage] = useState()
@@ -80,8 +80,9 @@ const GlobalLayout = ({ children }) => {
             },
             {
               key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3',
+              icon: <UploadOutlined  style={{color:"red"}}/>,
+              label: 'Sair',
+              onClick:()=>{logout()}
             },
           ]}
         />
