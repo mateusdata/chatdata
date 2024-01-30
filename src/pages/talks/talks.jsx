@@ -9,7 +9,7 @@ import audio3 from "../../components/audio/audio3.mp3";
 import images from "../../components/array images/images";
 import emogins from "../../components/array emogins/emogin";
 import Header from "../../components/header/header";
-import { Tooltip, Button, Popover } from 'antd';
+import { Tooltip, Button, Popover, Input } from 'antd';
 
 import AccountMenu from "../../components/barra lateral/barraLateral";
 import { Contexto } from "../../context/Contexto";
@@ -119,12 +119,12 @@ function Talks() {
       <div className=" w-full  flex ">
         <div className="flex flex-col w-[100%]  justify-center items-center ">
           {arrayTalks?.map((item, index) => (
-            <div className={`w-[80%] p-0  flex ${user.nome===item.currentUser? "justify-end": "justify-start"} p-2  `}>
+            <div className={`w-[80%] p-0  flex ${user.nome === item.currentUser ? "justify-end" : "justify-start"} p-2  `}>
 
-              <div className="flex w-[50%] flex-col p-5 rounded-2xl shadow-md bg-[#D9FDD3]  ">
+              <div className={`flex w-[50%] ${user.nome === item.currentUser ? " bg-[#D9FDD3]" : "j bg-white"} break-words flex-col p-5 rounded-2xl shadow-md bg-[#D9FDD3] `}>
                 <p>{!(user.nome === item.currentUser) ? item.currentUser : "Voce"}</p>
-                <pre>{item.talk}</pre>
-            
+                <p>{item.talk}</p>
+
                 <p>{item.time}</p>
               </div>
 
@@ -132,6 +132,7 @@ function Talks() {
           ))}
 
         </div>
+        
       </div>
     </GlobalLayout>
   );
