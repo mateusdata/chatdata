@@ -99,7 +99,7 @@ const GlobalLayout = ({ children }) => {
           />
         </Header>
         <Content
-          className='max-h-[100%] h-2 p-0 overflow-y-auto'
+          className='max-h-[100%] h-2 p-0 overflow-y-auto  overflow-x-hidden'
         >
           {children}
 

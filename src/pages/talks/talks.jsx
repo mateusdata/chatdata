@@ -121,11 +121,11 @@ function Talks() {
           {arrayTalks?.map((item, index) => (
             <div className={`w-[80%] p-0  flex ${user.nome === item.currentUser ? "justify-end" : "justify-start"} p-2  `}>
 
-              <div className={`flex w-[50%] ${user.nome === item.currentUser ? " bg-[#D9FDD3]" : "j bg-white"} break-words flex-col p-5 rounded-2xl shadow-md bg-[#D9FDD3] `}>
-                <p>{!(user.nome === item.currentUser) ? item.currentUser : "Voce"}</p>
-                <p>{item.talk}</p>
+              <div className={`flex min-w-10 max-w-[80%] ${user.nome === item.currentUser ? " bg-[#D9FDD3]" : "j bg-white"} break-words flex-col p-2 rounded-2xl shadow-md bg-[#D9FDD3] `}>
+                <p className="text-blue-500">{!(user.nome === item.currentUser) ? item.currentUser : "Voce"}</p>
+                <pre>{item.talk}</pre>
 
-                <p>{item.time}</p>
+                <p className="text-gray-1000">{item.time}</p>
               </div>
 
             </div>
