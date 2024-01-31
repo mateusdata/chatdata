@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [load, setLoad] = useState(true);
   const [emailAddress, setEmailAddress] = useState("");
   const navigate = useNavigate();
+  const [showScrow, setShowScrow] = useState(true);
 
   useEffect(() => {
     const recovereUser = localStorage.getItem("usuario");
@@ -69,6 +70,8 @@ export const AuthProvider = ({ children }) => {
         logout,
         load,
         emailAddress,
+        showScrow,
+        setShowScrow
       }}
     >
       {children}

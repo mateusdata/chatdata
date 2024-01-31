@@ -1,0 +1,7 @@
+.custom-sider {
+    width: 50px !important;
+    flex: 0 0 28% !important;
+    max-width: 30% !important;
+    background-color: red !important;
+  }
+  
