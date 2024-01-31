@@ -33,7 +33,7 @@ const GlobalLayout = ({ children }) => {
     }
   }, [screens]);
   
-  const [mensage, setMensage] = useState()
+  const [mensage, setMensage] = useState("")
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -55,7 +55,7 @@ const GlobalLayout = ({ children }) => {
       const hora = `${hours}:${minutes}`;
 
       axios.post("https://chat-data-api.vercel.app/send", {
-        talk: mensage,
+        talk: mensage.trim(),
         time: hora,
         phoneUser: user.email,
         currentUser: user.nome,
@@ -135,12 +135,12 @@ const GlobalLayout = ({ children }) => {
             }}
           />
           <div className=' sm:hidden flex flex-nowrap px-5 pt-3 flex-row items-center justify-between'>
-             <div onClick={()=>logout()} className='flex items-center gap-0 border px-1 rounded-lg shadow-xl'>
+             <div onClick={()=>logout()} className='flex items-center gap-0  px-1 rounded-lg '>
              <LogoutOutlined  style={{ height:40, width:40, color:"red" }} className='ml-0 p-1'/>
               <p className='tex-white text-lg'>Sair</p>
              </div>
 
-              <p className='tex-white text-lg   px-1 py-2  shadow-sm' >Chatdata</p>
+              <p className='tex-white text-lg   px-1 py-2  shadow-sm' >Chatdata <ChatSharp   style={{ height:24, width:24, color:"#2D6CEA" }}/></p>
 
 
           </div>
@@ -156,9 +156,7 @@ const GlobalLayout = ({ children }) => {
         <div className='flex justify-center items-center'>
           <form onSubmit={sendMensage} className='w-11/12 flex  gap-4 flex-nowrap justify-center itens-center'>
            
-
-
-            <TextArea onChange={(e) => setMensage(e.target.value.trim())}
+            <TextArea onChange={(e) => setMensage(e.target.value)}
               value={mensage}
               className="mb-5 w-11-12 pt-3 p-3 flex flex-col  rounded-3xl shadow-2xl border-y-2 border-gray-600 bg-gray-50  max-h-s w-full sm:w-[60%] lg:w-[50%]"
               autoSize={{ minRows: 1, maxRows: 50 }}
