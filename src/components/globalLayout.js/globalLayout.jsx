@@ -26,7 +26,7 @@ const GlobalLayout = ({ children }) => {
   
 
   useEffect(() => {
-    if (!screens.sm) {
+    if (!screens.lg) {
       setCollapsed(true);
     } else {
       setCollapsed(false);
@@ -71,7 +71,7 @@ const GlobalLayout = ({ children }) => {
 
   return (
     <Layout>
-      { screens.sm && (
+      { screens.lg && (
         <Sider
         className='h-screen custom-sider'
           trigger={null}
@@ -156,7 +156,7 @@ const GlobalLayout = ({ children }) => {
         <div className='flex justify-center items-center'>
           <form onSubmit={sendMensage} className='w-11/12 flex  gap-4 flex-nowrap justify-center itens-center'>
            
-            <TextArea onChange={(e) => setMensage(e.target.value)}
+            <TextArea onClick={()=>setShowScrow(true)} onChange={(e) => setMensage(e.target.value)}
               value={mensage}
               className="mb-5 w-11-12 pt-3 p-3 flex flex-col  rounded-3xl shadow-2xl border-y-2 border-gray-600 bg-gray-50  max-h-s w-full sm:w-[60%] lg:w-[50%]"
               autoSize={{ minRows: 1, maxRows: 50 }}
