@@ -72,7 +72,7 @@ function Talks() {
     }
     timerRef.current = setTimeout(() => {
       setShowScrow(true);
-    }, 4000);
+    }, 100000);
   };
 
   const [longPress, setLongPress] = useState(false);
@@ -101,9 +101,9 @@ function Talks() {
     <GlobalLayout>
       {arrayTalks.length > 0 ? (
         <div
-         onTouchMove={handleScroll}
+          onTouchMove={handleScroll}
           onWheel={handleScroll}
-          className=" w-full  flex "
+          className=" w-full  flex  mb-6"
         >
           <div className="flex flex-col w-[100%]  justify-center items-center ">
             {arrayTalks?.map((item, index) => (

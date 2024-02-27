@@ -35,7 +35,7 @@ function LoginForm() {
   const isLogin = () => {
     login(email, req.newName);
   }
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (fazerLogin) {
@@ -46,6 +46,7 @@ function LoginForm() {
           senha,
         }).then((response) => {
           console.log(response.data);
+          localStorage.setItem("arraySize", "0");
           alert("deu certo")
           setErro(JSON.stringify(response.data.erroStatus));
           if (response.data.erroStatus) {
@@ -64,16 +65,24 @@ function LoginForm() {
       email,
       senha,
       fazerLogin
-    }).then((response) => {
-      setErro(JSON.stringify(response.data.erroStatus));
-      console.log(response.data.erroStatus);
-      if (response.data.erroStatus) {
-        setReq(response.data)
-      }
+    })
+      .then((response) => {
+        localStorage.setItem("arraySize", "0");
+        setErro(JSON.stringify(response.data.erroStatus));
+        console.log(response.data.erroStatus);
+        if (response.data.erroStatus) {
+          setReq(response.data);
+        } else {
+          // Se o login for bem-sucedido e a resposta não contiver erroStatus, faça o seguinte:
+          // 1. Armazene o tamanho do array em localStorage
+          localStorage.setItem("arraySize", "0");
+          // 2. Atualize o estado ou faça outras ações necessárias após o login bem-sucedido
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
-    }).catch((error) => {
-      console.error(error);
-    });
     return;
   }
 
@@ -81,7 +90,7 @@ function LoginForm() {
     return (
       <div className="load">
         <Spin size="large" />
-      
+
       </div>
     );
   }
@@ -246,7 +255,7 @@ function LoginForm() {
 
                   <button
                     onClick={() => {
-                     
+
                     }}
                     type="submit"
                     class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
