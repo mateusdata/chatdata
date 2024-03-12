@@ -132,7 +132,7 @@ const App = ({ children }) => {
               className="mb-5 w-11-12 pt-3 p-3 flex flex-col  rounded-3xl shadow-2xl border-y-2 border-gray-600 bg-gray-50  max-h-s w-full sm:w-[60%] lg:w-[50%]"
               autoSize={{ minRows: 1, maxRows: 50 }}
               onKeyUp={handleKeyPress}
-              rows={1} placeholder="DIGITE SUA MENSAGEM" maxLength={5000} />
+              rows={1} placeholder="MENSAGEM..." maxLength={5000} />
 
             <button className=' flex  justify-center mt-1 h-12 w-8'>
               <Send className='hover:text-green-400' style={{ color: "green", fontSize: "38px" }} />
