@@ -1,12 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import './index.css';
+//import './index.css';
 import {
   ArrowDownOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu, Button, theme, Grid, Avatar, FloatButton, Tooltip } from 'antd';
 import { Contexto } from '../../context/Contexto';
@@ -62,8 +59,8 @@ const App = ({ children }) => {
       setCollapsedWidth(80 - collapsedWidth);
     }
     else {
-      setCollapsed(false);
-      setCollapsedWidth(80 - collapsedWidth);
+      setCollapsed(true);
+      setCollapsedWidth(80);
     }
   }, [screens]);
 
@@ -74,7 +71,7 @@ const App = ({ children }) => {
         <div className="demo-logo-vertical" />
         <Menu
           className='min-h-screen'
-          theme="light"
+          theme="dark"
           mode="inline"
           defaultSelectedKeys={['1']}
           items={[
@@ -100,7 +97,7 @@ const App = ({ children }) => {
           ]}
         />
       </Sider>
-      <Layout className=' ' > {"-"}
+      <Layout className='' > 
         {/*"Aqui é a cor do fundo em volta do filho do menu"*/}
         <Header
 
@@ -108,7 +105,7 @@ const App = ({ children }) => {
           style={{
             padding: 0,
             background: colorBgContainer,
-            margin: '-22px -16px 0 0px',
+           
           }}
         >
           <Button
@@ -137,8 +134,8 @@ const App = ({ children }) => {
               onKeyUp={handleKeyPress}
               rows={1} placeholder="DIGITE SUA MENSAGEM" maxLength={5000} />
 
-            <button className=' flex  justify-center mt-3 h-12 w-8'>
-              <Send style={{color:"blue", height:"20px"}}  className='"text-red-300'/>
+            <button className=' flex  justify-center mt-1 h-12 w-8'>
+              <Send className='hover:text-green-400' style={{ color: "green", fontSize: "38px" }} />
             </button>
 
             <div className='hidden md:block'>
