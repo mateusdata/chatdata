@@ -1,0 +1,31 @@
+CREATE TABLE `conversas` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`talk` mediumtext NOT NULL,
+	`time` varchar(50),
+	`phoneUser` varchar(50),
+	`currentUser` varchar(50),
+	`password` varchar(255),
+	PRIMARY KEY (`id`)
+) ENGINE InnoDB,
+  CHARSET utf8mb4,
+  COLLATE utf8mb4_0900_ai_ci;
+
+CREATE TABLE `user` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`name` varchar(255) NOT NULL,
+	`email` varchar(255) NOT NULL,
+	`password` varchar(255) NOT NULL,
+	PRIMARY KEY (`id`)
+) ENGINE InnoDB,
+  CHARSET utf8mb4,
+  COLLATE utf8mb4_0900_ai_ci;
+
+CREATE TABLE `usuarios` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`nome` varchar(45) NOT NULL,
+	`email` varchar(45) NOT NULL,
+	`senha` varchar(45) NOT NULL,
+	PRIMARY KEY (`id`)
+) ENGINE InnoDB,
+  CHARSET utf8mb4,
+  COLLATE utf8mb4_0900_ai_ci;
