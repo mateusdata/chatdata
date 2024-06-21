@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-    baseURL: 'http://localhost:3001',
+    baseURL: 'https://chat-data-api.onrender.com',
     timeout: 10000,
 });
 
