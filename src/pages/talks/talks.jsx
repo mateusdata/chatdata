@@ -117,7 +117,7 @@ function Talks() {
           onWheel={handleScroll}
           className=" w-full  flex  mb-6"
         >
-          <div className="flex flex-col w-[100%]  justify-center items-center ">
+          <div className="flex flex-col w-[100%]  justify-center items-center  lg:px-52  2xl:px-96">
             {arrayTalks?.map((item, index) => (
               <div
                 key={index}
