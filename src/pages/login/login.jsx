@@ -126,7 +126,7 @@ function LoginForm() {
                       {...register("senha")}
                       type="password"
                       id="password"
-                      name="password"
+                      name="senha"
                       className={`border w-full rounded-md p-3 hover:outline-blue-500 h-10 ${errors.senha ? "border-red-500" : ""
                         }`}
                       aria-describedby="password-error"

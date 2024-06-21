@@ -1,1 +1,1 @@
-export const websocket =  'ws://chat-data-api.onrender.com'
+export const websocket =  'wss://chat-data-api.onrender.com'

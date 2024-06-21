@@ -10,6 +10,7 @@ import { CopyOutlined } from "@ant-design/icons";
 import Skelecto from "../../components/skelecto/skelecto";
 import { api } from "../../config/api";
 import NotMessage from "../../components/NotMessage";
+import { websocket } from "../../config/websocket";
 
 function Talks() {
   const [arrayTalks, setArrayTalks] = useState([]);
@@ -19,7 +20,7 @@ function Talks() {
   const ws = useRef(null);
 
   useEffect(() => {
-    ws.current = new WebSocket('ws://chat-data-api.onrender.com'); // Ajuste o URL conforme necessário
+    ws.current = new WebSocket(websocket); // Ajuste o URL conforme necessário
 
     ws.current.onopen = () => {
     };
