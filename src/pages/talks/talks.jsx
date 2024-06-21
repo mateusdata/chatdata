@@ -199,7 +199,7 @@ function Talks() {
           </div>
         </div>
       ) : (
-        <NotMessage />
+        <Skelecto loading={true} />
       )}
     </GlobalLayout>
   );
