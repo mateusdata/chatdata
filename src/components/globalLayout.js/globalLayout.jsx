@@ -10,6 +10,7 @@ import { Contexto } from '../../context/Contexto';
 import axios from 'axios';
 import { ArrowLeft, ChatSharp, Logout, Send } from '@mui/icons-material';
 import TextArea from 'antd/es/input/TextArea';
+import { api } from '../../config/api';
 const { Header, Sider, Content } = Layout;
 const App = ({ children }) => {
   const [collapsedWidth, setCollapsedWidth] = useState(80);
@@ -21,30 +22,48 @@ const App = ({ children }) => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const sendMensage = (e) => {
-    e?.preventDefault();
-    if (mensage) {
-      setMensage("");
+  const sendMensage = async (e) => {
+    try {
+      e?.preventDefault(); // Prevenir comportamento padrão do evento se existir
+  
+      if (!mensage) {
+        return; // Sai da função se não houver mensagem
+      }
+  
       const currentTime = new Date();
-      let hours = currentTime.getHours().toLocaleString("pt-BR", {
+      const hours = currentTime.getHours().toLocaleString("pt-BR", {
         minimumIntegerDigits: 2,
         useGrouping: false,
       });
-      let minutes = currentTime.getMinutes().toLocaleString("pt-BR", {
+      const minutes = currentTime.getMinutes().toLocaleString("pt-BR", {
         minimumIntegerDigits: 2,
         useGrouping: false,
       });
-      //let seconds = currentTime.getSeconds().toLocaleString('pt-BR', {minimumIntegerDigits: 2, useGrouping:false});
       const hora = `${hours}:${minutes}`;
-
-      axios.post("https://chat-data-api.vercel.app/send", {
+  
+      // Objeto de mensagem a ser enviado
+      const messageData = {
         talk: mensage.trim(),
         time: hora,
         phoneUser: user.email,
         currentUser: user.nome,
-      });
+      };
+  
+      // Envia a mensagem para a API
+      const response = await api.post("/send", messageData);
+      console.log("Mensagem enviada com sucesso:", response.data);
+  
+      // Limpa o campo de mensagem após o envio
+      setMensage("");
+  
+    } catch (error) {
+      console.error("Erro ao enviar mensagem:", error);
+      // Trate o erro de forma adequada, por exemplo, exibindo um alerta para o usuário
+      alert("Erro ao enviar mensagem. Tente novamente mais tarde.");
     }
-  }
+  };
+  
+
   const handleKeyPress = (event) => {
     if (event?.key === 'Enter') {
 
@@ -97,7 +116,7 @@ const App = ({ children }) => {
           ]}
         />
       </Sider>
-      <Layout className='' > 
+      <Layout className='' >
         {/*"Aqui é a cor do fundo em volta do filho do menu"*/}
         <Header
 
@@ -105,7 +124,7 @@ const App = ({ children }) => {
           style={{
             padding: 0,
             background: colorBgContainer,
-           
+
           }}
         >
           <Button

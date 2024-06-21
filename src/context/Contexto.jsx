@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
     setLoad(false);
   }, []);
 
-  const login = (email, nome) => {
+  const login = async (email, nome) => {
     let arrayColor = [
       "#d31b1b",
       "#b615d6",

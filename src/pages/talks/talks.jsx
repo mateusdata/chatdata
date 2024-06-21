@@ -18,6 +18,7 @@ import GlobalLayout from "../../components/globalLayout.js/globalLayout";
 import { useRef } from "react";
 import { CopyOutlined } from "@ant-design/icons";
 import Skelecto from "../../components/skelecto/skelecto";
+import { api } from "../../config/api";
 
 function Talks() {
   const [arrayTalks, setArrayTalks] = useState([]);
@@ -37,18 +38,19 @@ function Talks() {
     }
     setUser(JSON.parse(recovereUser));
 
-    Axios.get("https://chat-data-api.vercel.app/").then((response) => {
+    api.get("/").then((response) => {
       setArrayTalks(response.data);
+      console.log(response.data)
       if (showScrow) {
         minhaRef.current.scrollIntoView();
         //{ behavior: 'smooth' }
       }
-    }).catch((err)=>console.log(""));
+    }).catch((err)=>console.log("error"));
     // eslint-disable-next-line
   }, [arrayTalks]);
 
   const deleteTalks = (id) => {
-    Axios.delete(`https://chat-data-api.vercel.app/apagar/${id}`).then((r)=>{
+    api.delete(`/apagar/${id}`).then((r)=>{
     //console.log(r.data)
     setCurrentMensage("")
     });
@@ -93,13 +95,14 @@ function Talks() {
     setLongPress(false);
   };
   const deleteTalksa = (id) => {
-    Axios.delete(`https://chat-data-api.vercel.app/apagar/${id}`);
+    api.delete(`https://chat-data-api.vercel.app/apagar/${id}`);
   };
 
 
   return (
     <GlobalLayout>
-      {arrayTalks.length > 0 ? (
+      <pre>{JSON.stringify(arrayTalks, null, 2)}</pre>
+      {true &&arrayTalks?.length > 0 ? (
         <div
           onTouchMove={handleScroll}
           onWheel={handleScroll}

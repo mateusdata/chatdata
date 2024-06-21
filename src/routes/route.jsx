@@ -6,6 +6,7 @@ import Talks from "../pages/talks/talks";
 import { HashLoader } from "react-spinners";
 import Welcome from "../pages/welcome/welcome";
 import { Spin } from "antd";
+import SignupForm from "../pages/login/SignupForm";
 
 
 const Rotas = () => {
@@ -19,7 +20,7 @@ const Rotas = () => {
          </div>
     }
     if (!autenticado) {
-      return <Navigate to={"/welcome" || "/login"} />
+      return <Navigate to={"/login  " || "/login"} />
     }
     return children
   }
@@ -30,6 +31,8 @@ const Rotas = () => {
           <Route exact path="/" element={<Private><Talks /></Private>} />
           <Route exact path="/welcome" element={<Welcome />} />
           <Route exact path="/login" element={<LoginForm />} />
+          <Route exact path="/cadastro" element={<SignupForm />} />
+
         </Routes>
       </AuthProvider>
     </BrowserRouter>

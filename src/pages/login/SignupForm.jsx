@@ -1,42 +1,31 @@
-import React, { useContext, useState } from "react";
-import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
-import HeaderLogin from "../../components/herder login/header";
 import { Spin } from "antd";
 import { Contexto } from "../../context/Contexto";
 import { api } from "../../config/api";
 
-
-function LoginForm() {
+function SignupForm() {
   const { login } = useContext(Contexto);
 
   const schema = yup.object().shape({
+    nome: yup.string().required("Nome é obrigatório"),
     email: yup.string().required("Email é obrigatório").email("Email inválido"),
-    senha: yup.string().required("Senha é obrigatória"),
-
+    senha: yup.string().required("Senha é obrigatória").min(6, "A senha deve ter pelo menos 6 caracteres"),
   });
+
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      email: "email@gmail.com",
-      senha: "123456"
-    }
   });
-
 
   const [load, setLoad] = useState(true);
   const [erro, setErro] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    const recovereUser = localStorage.getItem("usuario");
-    if (recovereUser) {
-      navigate("/");
-    }
     setTimeout(() => {
       setLoad(false);
     }, 1300);
@@ -44,7 +33,8 @@ function LoginForm() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await api.post("/login", {
+      const response = await api.post("/user", {
+        nome: data.nome,
         email: data.email,
         senha: data.senha,
       });
@@ -52,9 +42,9 @@ function LoginForm() {
       console.log(response.data);
       await login(response.data.email, response.data.name);
       localStorage.setItem("arraySize", "0");
-      // navigate("/");
     } catch (error) {
-      console.error("Erro ao fazer login:", error);
+      console.error("Erro ao criar conta:", error);
+      setErro("Erro ao criar conta. Por favor, tente novamente mais tarde.");
     }
   };
 
@@ -73,14 +63,36 @@ function LoginForm() {
           <div className="p-4 sm:p-7">
             <div className="text-center">
               <h1 className="block text-2xl font-bold text-gray-800 dark:text-white mb-12">
-                Entre em sua conta
+                Criar Conta
               </h1>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="grid gap-y-4">
                 <div>
-                  <label htmlFor="email" className="block text-sm mb-2  dark:text-white">
+                  <label htmlFor="nome" className="block text-sm mb-2 dark:text-white">
+                    Nome
+                  </label>
+                  <div className="relative">
+                    <input
+                      {...register("nome")}
+                      type="text"
+                      id="nome"
+                      name="nome"
+                      className={`border w-full rounded-md p-3 hover:outline-blue-500 h-10 ${errors.nome ? "border-red-500" : ""
+                        }`}
+                      aria-describedby="nome-error"
+                    />
+                    {errors.nome && (
+                      <p className="text-xs text-red-600 mt-2" id="nome-error">
+                        {errors.nome.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="email" className="block text-sm mb-2 dark:text-white">
                     Endereço de email
                   </label>
                   <div className="relative">
@@ -102,30 +114,21 @@ function LoginForm() {
                 </div>
 
                 <div>
-                  <div className="flex justify-between items-center">
-                    <label htmlFor="password" className="block text-sm mb-2 dark:text-white">
-                      Senha
-                    </label>
-                    <button
-                      type="button"
-                      className="text-sm text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-
-                    >
-                      Esqueceu sua senha
-                    </button>
-                  </div>
+                  <label htmlFor="password" className="block text-sm mb-2 dark:text-white">
+                    Senha
+                  </label>
                   <div className="relative">
                     <input
                       {...register("senha")}
                       type="password"
-                      id="password"
-                      name="password"
+                      id="senha"
+                      name="senha"
                       className={`border w-full rounded-md p-3 hover:outline-blue-500 h-10 ${errors.senha ? "border-red-500" : ""
                         }`}
-                      aria-describedby="password-error"
+                      aria-describedby="senha-error"
                     />
                     {errors.senha && (
-                      <p className="text-xs text-red-600 mt-2" id="password-error">
+                      <p className="text-xs text-red-600 mt-2" id="senha-error">
                         {errors.senha.message}
                       </p>
                     )}
@@ -136,15 +139,8 @@ function LoginForm() {
                   type="submit"
                   className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                 >
-                  Entrar
-                </button>
-
-                <Link to={"/cadastro"}
-                  type="button"
-                  className="text-sm text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                >
                   Criar Conta
-                </Link>
+                </button>
               </div>
             </form>
           </div>
@@ -154,4 +150,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default SignupForm;
