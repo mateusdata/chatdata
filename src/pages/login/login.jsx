@@ -55,11 +55,11 @@ function LoginForm() {
       // navigate("/");
     } catch (error) {
       console.error("Erro ao fazer login:", error);
-      if (error.response.status === 404) {
+      if (error?.response?.status === 404) {
         setError("email")
         setError("senha", { message: "Conta não encontrada" })
       }
-      if (!error.response) {
+      if (!error?.response) {
         setError("senha", { message: "Sem conexão  com a internet" })
       }
     }

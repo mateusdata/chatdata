@@ -1,1 +1,1 @@
-export const websocket =  'wss://present-gabbey-mateusdata-fefbff92.koyeb.app'
+export const websocket =  'wss://chat-data-api.onrender.com'

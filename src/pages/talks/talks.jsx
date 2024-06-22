@@ -11,38 +11,61 @@ import Skelecto from "../../components/skelecto/skelecto";
 import { api } from "../../config/api";
 import NotMessage from "../../components/NotMessage";
 import { websocket } from "../../config/websocket";
+import { OnlinePredictionOutlined } from "@mui/icons-material";
 
 function Talks() {
   const [arrayTalks, setArrayTalks] = useState([]);
   const { user, setUser, showScrow, setShowScrow } = useContext(Contexto);
   const [copy, setCopy] = useState(null);
   const minhaRef = useRef(null);
-  const ws = useRef(null);
+  const [ws, setWs] = useState(null);
+  const [websocketOpen, setWebsocketOpen] = useState(false);
+  const [updateTalks, setUpdateTalks] = useState(false);
+
 
   useEffect(() => {
-    ws.current = new WebSocket(websocket); // Ajuste o URL conforme necessário
+    // Função para iniciar a conexão WebSocket
+    const startWebSocket = () => {
+      const websocketInstance = new WebSocket(websocket);
+      setWs(websocketInstance);
 
-    ws.current.onopen = () => {
-    };
-    ws.current.onmessage = (event) => {
-      const message = event.data;
-      try {
-        const data = JSON.parse(event.data)
-        setArrayTalks(data)
-     
+      websocketInstance.onopen = () => {
+        console.log("Conexão WebSocket aberta.");
+        setWebsocketOpen(true);
+      };
+
+      websocketInstance.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data)
+          setArrayTalks(data)
+          console.log(data)
+
           //{ behavior: 'smooth' }
-      } catch (error) {
+        } catch (error) {
 
+        }
+      };
+
+      websocketInstance.onclose = () => {
+        console.log("Conexão WebSocket fechada.");
+        setWebsocketOpen(false);
+        setUpdateTalks(true)
+      };
+
+      websocketInstance.onerror = (error) => {
+        console.error("Erro na conexão WebSocket:", error);
+      };
+    };
+
+    startWebSocket(); // Inicia a conexão WebSocket ao montar o componente
+
+    return () => {
+      // Fecha a conexão WebSocket ao desmontar o componente
+      if (ws) {
+        ws.close();
       }
     };
-
-    ws.current.onclose = () => {
-    };
-    return () => {
-      ws.current.close();
-    };
-    
-  }, []);
+  }, [updateTalks]);
 
 
   useEffect(() => {
@@ -111,6 +134,7 @@ function Talks() {
   return (
     <GlobalLayout>
       <pre>{false && JSON.stringify(arrayTalks, null, 2)}</pre>
+
       {true && arrayTalks?.length > 0 ? (
         <div
           onTouchMove={handleScroll}
@@ -201,6 +225,9 @@ function Talks() {
       ) : (
         <Skelecto loading={true} />
       )}
+
+      <p>Status da conexão WebSocket: {websocketOpen ? 'Online' : 'Fechada'}</p>
+      <OnlinePredictionOutlined style={{ color: websocketOpen ? "green" : "black", }} fontSize="large" className={`${websocketOpen ? "animate-bounce" : "animate-none"}`} />
     </GlobalLayout>
   );
 }
