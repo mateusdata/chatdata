@@ -38,7 +38,6 @@ function Talks() {
         try {
           const data = JSON.parse(event.data)
           setArrayTalks(data)
-          console.log(data)
 
           //{ behavior: 'smooth' }
         } catch (error) {
