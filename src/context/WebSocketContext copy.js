@@ -9,12 +9,6 @@ export default function WebSocketProvider({ children }) {
     const [websocketOpen, setWebsocketOpen] = useState(false);
 
 
-    useEffect(() => {
-        const recoveryMessage = localStorage.getItem("messages");
-        if (recoveryMessage) {
-            setMessages(JSON.parse(recoveryMessage))
-        }
-    }, [])
 
     useEffect(() => {
         console.log('Conexão ');
@@ -35,14 +29,14 @@ export default function WebSocketProvider({ children }) {
                 if (Array.isArray(receivedMessage)) {
                     setMessages((prevMessages) => {
                         const updatedMessages = [...prevMessages, ...receivedMessage];
-                        localStorage.setItem("messages", JSON.stringify(updatedMessages));
+                        //localStorage.setItem("messages", JSON.stringify(updatedMessages));
                         return updatedMessages;
                     });
                 } else {
                     // Caso seja uma única mensagem
                     setMessages((prevMessages) => {
                         const updatedMessages = [...prevMessages, receivedMessage];
-                        localStorage.setItem("messages", JSON.stringify(updatedMessages));
+                       // localStorage.setItem("messages", JSON.stringify(updatedMessages));
                         return updatedMessages;
                     });
                 }

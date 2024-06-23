@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { websocket } from "../config/websocket";
+import { OnlinePredictionSharp } from "@mui/icons-material";
 
 export const ContextWebSocket = createContext(null)
 
@@ -34,7 +35,7 @@ export default function WebSocketProvider({ children }) {
                 if (!messages.length > 5) {
                     console.log(messages.length)
                     //setMessages([])
-                    return 
+                    return
                 }
                 // Verifica se receivedMessage é uma lista de mensagens
                 if (Array.isArray(receivedMessage)) {
@@ -101,8 +102,10 @@ export default function WebSocketProvider({ children }) {
         >
             {/* Mostra o status da conexão na tela */}
             <span className={`${websocketOpen ? "text-green-400 animate-pulse" : "text-red-600"} font-extrabold text-3xl fixed top-0 right-4 bottom-0`}>
-                {websocketOpen ? "Online" : "Tentando reconectar..."}
-                {messages?.length}
+                
+                {websocketOpen ? "Online " : "Tentando reconectar..."}
+                <OnlinePredictionSharp focusable />
+          
             </span>
             {children}
         </ContextWebSocket.Provider>
