@@ -9,62 +9,15 @@ import { useRef } from "react";
 import { CopyOutlined } from "@ant-design/icons";
 import Skelecto from "../../components/skelecto/skelecto";
 import { api } from "../../config/api";
-import NotMessage from "../../components/NotMessage";
-import { websocket } from "../../config/websocket";
-import { OnlinePredictionOutlined } from "@mui/icons-material";
+import { ContextWebSocket } from "../../context/WebSocketContext";
 
 function Talks() {
-  const [arrayTalks, setArrayTalks] = useState([]);
+  const {messages} = useContext(ContextWebSocket);
   const { user, setUser, showScrow, setShowScrow } = useContext(Contexto);
   const [copy, setCopy] = useState(null);
   const minhaRef = useRef(null);
-  const [ws, setWs] = useState(null);
-  const [websocketOpen, setWebsocketOpen] = useState(false);
-  const [updateTalks, setUpdateTalks] = useState(false);
+  
 
-
-  useEffect(() => {
-    // Função para iniciar a conexão WebSocket
-    const startWebSocket = () => {
-      const websocketInstance = new WebSocket(websocket);
-      setWs(websocketInstance);
-
-      websocketInstance.onopen = () => {
-        console.log("Conexão WebSocket aberta.");
-        setWebsocketOpen(true);
-      };
-
-      websocketInstance.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data)
-          setArrayTalks(data)
-
-          //{ behavior: 'smooth' }
-        } catch (error) {
-
-        }
-      };
-
-      websocketInstance.onclose = () => {
-        console.log("Conexão WebSocket fechada.");
-        setWebsocketOpen(false);
-        setUpdateTalks(true)
-      };
-
-      websocketInstance.onerror = (error) => {
-        console.error("Erro na conexão WebSocket:", error);
-      };
-    };
-
-    startWebSocket(); // Inicia a conexão WebSocket ao montar o componente
-
-    return () => {
-      // Fecha a conexão WebSocket ao desmontar o componente
-      if (ws) {
-        ws.close();
-      }
-    };
-  }, [updateTalks]);
 
 
   useEffect(() => {
@@ -78,7 +31,7 @@ function Talks() {
 
 
     // eslint-disable-next-line
-  }, [arrayTalks]);
+  }, [messages]);
 
   const deleteTalks = (id) => {
     api.delete(`/apagar/${id}`).then((r) => {
@@ -132,16 +85,16 @@ function Talks() {
 
   return (
     <GlobalLayout>
-      <pre>{false && JSON.stringify(arrayTalks, null, 2)}</pre>
+      <pre>{false && JSON.stringify(messages, null, 2)}</pre>
 
-      {true && arrayTalks?.length > 0 ? (
+      {true && messages?.length > 0 ? (
         <div
           onTouchMove={handleScroll}
           onWheel={handleScroll}
           className=" w-full  flex  mb-6"
         >
           <div className="flex flex-col w-[100%]  justify-center items-center  lg:px-52  2xl:px-96">
-            {arrayTalks?.map((item, index) => (
+            {messages?.map((item, index) => (
               <div
                 key={index}
                 onMouseDown={() => startPress(index)}
@@ -225,8 +178,6 @@ function Talks() {
         <Skelecto loading={true} />
       )}
 
-      <p>Status da conexão WebSocket: {websocketOpen ? 'Online' : 'Fechada'}</p>
-      <OnlinePredictionOutlined style={{ color: websocketOpen ? "green" : "black", }} fontSize="large" className={`${websocketOpen ? "animate-bounce" : "animate-none"}`} />
     </GlobalLayout>
   );
 }

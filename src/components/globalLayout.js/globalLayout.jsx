@@ -8,43 +8,22 @@ import {
 } from '@ant-design/icons';
 import { Layout, Menu, Button, theme, Grid, Avatar, FloatButton, Tooltip } from 'antd';
 import { Contexto } from '../../context/Contexto';
-import axios from 'axios';
 import { ArrowLeft, Chat, ChatBubble, ChatSharp, Logout, Send } from '@mui/icons-material';
 import TextArea from 'antd/es/input/TextArea';
-import { api } from '../../config/api';
-import { websocket } from '../../config/websocket';
+import { ContextWebSocket } from '../../context/WebSocketContext';
 const { Header, Sider, Content } = Layout;
 const App = ({ children }) => {
-  const [collapsedWidth, setCollapsedWidth] = useState(80);
+  const [collapsedWidth, setCollapsedWidth, ] = useState(80);
   const { user, logout, showScrow, setShowScrow } = useContext(Contexto);
   const screens = Grid.useBreakpoint();
   const [collapsed, setCollapsed] = useState(false);
   const [mensage, setMensage] = useState("")
+  const { sendMessage } = useContext(ContextWebSocket);
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const ws = useRef(null);
-
-
-  useEffect(() => {
-    ws.current = new WebSocket(websocket);
-    ws.current.onopen = () => { };
-    ws.current.onmessage = (event) => { };
-    ws.current.onclose = () => { };
-    return () => {
-      ws.current.close();
-    };
-  }, []);
-
-  const sendWebSocketMessage = (message) => {
-    if (ws.current.readyState === WebSocket.OPEN) {
-      ws.current.send(JSON.stringify(message)); // Enviar como JSON string
-      //console.log('Mensagem enviada via WebSocket:', message);
-    } else {
-      //console.error('Erro: WebSocket não está aberto para enviar mensagem.');
-    }
-  };
 
   const sendMensage = async (e) => {
     try {
@@ -69,12 +48,12 @@ const App = ({ children }) => {
         currentUser: user.nome,
       };
 
-      sendWebSocketMessage(messageData); // Envia a mensagem via WebSocket
+      sendMessage(messageData); // Envia a mensagem via WebSocket
 
       setMensage(""); // Limpa o campo de mensagem após o envio
 
     } catch (error) {
-      console.error("Erro ao enviar mensagem:", error);
+      console.error("Erro ao enviar mensagem:", JSON.stringify(error));
       alert("Erro ao enviar mensagem. Tente novamente mais tarde.");
     }
   };

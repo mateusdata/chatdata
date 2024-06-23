@@ -7,6 +7,7 @@ import { HashLoader } from "react-spinners";
 import Welcome from "../pages/welcome/welcome";
 import { Spin } from "antd";
 import SignupForm from "../pages/login/SignupForm";
+import WebSocketProvider from "../context/WebSocketContext";
 
 
 const Rotas = () => {
@@ -15,9 +16,9 @@ const Rotas = () => {
     const { autenticado, load } = useContext(Contexto);
 
     if (load) {
-      return <div style={{display:"flex", color: "blue", justifyContent:"center",alignItems:"center", height:"100vh" }} className="loading">
-       <Spin size="large" />
-         </div>
+      return <div style={{ display: "flex", color: "blue", justifyContent: "center", alignItems: "center", height: "100vh" }} className="loading">
+        <Spin size="large" />
+      </div>
     }
     if (!autenticado) {
       return <Navigate to={"/login  " || "/login"} />
@@ -27,13 +28,15 @@ const Rotas = () => {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          <Route exact path="/" element={<Private><Talks /></Private>} />
-          <Route exact path="/welcome" element={<Welcome />} />
-          <Route exact path="/login" element={<LoginForm />} />
-          <Route exact path="/cadastro" element={<SignupForm />} />
+        <WebSocketProvider>
+          <Routes>
+            <Route exact path="/" element={<Private><Talks /></Private>} />
+            <Route exact path="/welcome" element={<Welcome />} />
+            <Route exact path="/login" element={<LoginForm />} />
+            <Route exact path="/cadastro" element={<SignupForm />} />
 
-        </Routes>
+          </Routes>
+        </WebSocketProvider>
       </AuthProvider>
     </BrowserRouter>
   );
