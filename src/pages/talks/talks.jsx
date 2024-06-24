@@ -12,13 +12,10 @@ import { api } from "../../config/api";
 import { ContextWebSocket } from "../../context/WebSocketContext";
 
 function Talks() {
-  const {messages} = useContext(ContextWebSocket);
+  const { messages, setMessages } = useContext(ContextWebSocket);
   const { user, setUser, showScrow, setShowScrow } = useContext(Contexto);
   const [copy, setCopy] = useState(null);
   const minhaRef = useRef(null);
-  
-
-
 
   useEffect(() => {
     const recovereUser = localStorage.getItem("usuario");
@@ -27,17 +24,19 @@ function Talks() {
       return;
     }
     setUser(JSON.parse(recovereUser));
-    minhaRef?.current?.scrollIntoView({ behavior: 'smooth' });
-
+    minhaRef?.current?.scrollIntoView({ behavior: 'auto', block: 'nearest' });
 
     // eslint-disable-next-line
   }, [messages]);
 
-  const deleteTalks = (id) => {
-    api.delete(`/apagar/${id}`).then((r) => {
-      //console.log(r.data)
-      setCurrentMensage("")
-    });
+  const deleteTalks = async (id) => {
+
+    try {
+      await api.delete(`/task/${id}`)
+      setMessages(prevMessages => prevMessages.filter(message => message.id !== id));
+    } catch (error) {
+
+    }
   };
 
   function isUrl(string) {
@@ -51,6 +50,7 @@ function Talks() {
   const timerRef = useRef(null);
 
   const handleScroll = () => {
+
     setCurrentMensage("")
     setShowScrow(false);
     if (timerRef.current) {
@@ -78,9 +78,7 @@ function Talks() {
     clearTimeout(pressTimer.current);
     setLongPress(false);
   };
-  const deleteTalksa = (id) => {
-    api.delete(`https://chat-data-api.vercel.app/apagar/${id}`);
-  };
+
 
 
   return (

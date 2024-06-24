@@ -26,23 +26,25 @@ export default function WebSocketProvider({ children }) {
             wsClient.onopen = () => {
                 console.log('Conexão WebSocket aberta');
                 setWebsocketOpen(true);
-                setWs(wsClient); // Atualiza o estado do WebSocket
+                setWs(wsClient); 
             };
 
             wsClient.onmessage = (event) => {
                 const receivedMessage = JSON.parse(event.data);
-                console.log(messages.length)
+                console.log(receivedMessage)
                 if (!messages.length > 5) {
                     console.log(messages.length)
                     //setMessages([])
                     return
                 }
-                // Verifica se receivedMessage é uma lista de mensagens
                 if (Array.isArray(receivedMessage)) {
 
                     setMessages((prevMessages) => {
-                        const updatedMessages = [...prevMessages, ...receivedMessage];
-                        return updatedMessages;
+                        const updatedMessages = receivedMessage.filter((msg) => {
+                            return !prevMessages.some((prevMsg) => prevMsg.id === msg.id);
+                        });
+                    
+                        return [...prevMessages, ...updatedMessages];
                     });
                 } else {
                     // Caso seja uma única mensagem
