@@ -19,21 +19,17 @@ export default function WebSocketProvider({ children }) {
 
 
     useEffect(() => {
-        console.log('Conexão ');
         function connectWebSocket() {
             const wsClient = new WebSocket(websocket);
 
             wsClient.onopen = () => {
-                console.log('Conexão WebSocket aberta');
                 setWebsocketOpen(true);
-                setWs(wsClient); 
+                setWs(wsClient);
             };
 
             wsClient.onmessage = (event) => {
                 const receivedMessage = JSON.parse(event.data);
-                console.log(receivedMessage)
                 if (!messages.length > 5) {
-                    console.log(messages.length)
                     //setMessages([])
                     return
                 }
@@ -43,7 +39,7 @@ export default function WebSocketProvider({ children }) {
                         const updatedMessages = receivedMessage.filter((msg) => {
                             return !prevMessages.some((prevMsg) => prevMsg.id === msg.id);
                         });
-                    
+
                         return [...prevMessages, ...updatedMessages];
                     });
                 } else {
@@ -57,12 +53,10 @@ export default function WebSocketProvider({ children }) {
             };
 
             wsClient.onclose = () => {
-                console.log('Conexão WebSocket fechada');
                 setTimeout(connectWebSocket, 1);
                 setWebsocketOpen(false);
             };
             wsClient.onerror = (error) => {
-                console.log("Deu erro");
                 setTimeout(connectWebSocket, 1);
             }
         }
@@ -104,10 +98,10 @@ export default function WebSocketProvider({ children }) {
         >
             {/* Mostra o status da conexão na tela */}
             <span className={`${websocketOpen ? "text-green-400 animate-pulse" : "text-red-600"} font-extrabold text-3xl fixed top-0 right-4 bottom-0`}>
-                
+
                 {websocketOpen ? "Online " : "Tentando reconectar..."}
                 <OnlinePredictionSharp focusable />
-          
+
             </span>
             {children}
         </ContextWebSocket.Provider>
