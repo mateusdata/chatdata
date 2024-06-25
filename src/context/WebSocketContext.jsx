@@ -55,11 +55,11 @@ export default function WebSocketProvider({ children }) {
             };
 
             wsClient.onclose = () => {
-                setTimeout(connectWebSocket, 1);
+                setTimeout(connectWebSocket, 100);
                 setWebsocketOpen(false);
             };
             wsClient.onerror = (error) => {
-                setTimeout(connectWebSocket, 1);
+                setTimeout(connectWebSocket, 100);
             }
         }
 
@@ -95,7 +95,8 @@ export default function WebSocketProvider({ children }) {
                 messages,
                 setMessages,
                 ws,
-                sendMessage
+                sendMessage,
+                websocketOpen
             }}
         >
             {/* Mostra o status da conexão na tela */}
@@ -108,7 +109,9 @@ export default function WebSocketProvider({ children }) {
                         <AvatarUser name={user?.nome[0]?.toUpperCase()} />
                     </div>
                 }
+
             </div>
+            <div className={` hidden md:block  fixed top-100 right-4 bottom-7 font-extrabold ${websocketOpen && "text-green-500 animate-pulse"}`}>{websocketOpen && "Online"}</div>
             {children}
         </ContextWebSocket.Provider>
     );
