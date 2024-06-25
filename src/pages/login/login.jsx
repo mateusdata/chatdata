@@ -9,11 +9,12 @@ import HeaderLogin from "../../components/herder login/header";
 import { Spin } from "antd";
 import { Contexto } from "../../context/Contexto";
 import { api } from "../../config/api";
+import { LoadingOutlined } from "@ant-design/icons";
 
 
 function LoginForm() {
   const { login } = useContext(Contexto);
-
+  const [loading, setLoading] = useState(false)
   const schema = yup.object().shape({
     email: yup.string().required("Email é obrigatório").email("Email inválido"),
     senha: yup.string().required("Senha é obrigatória"),
@@ -26,7 +27,7 @@ function LoginForm() {
       senha: ""
     }
   });
-
+  const cores = ["red", "blue", "green", "cyan", "orange", "purple", "yellow", "pink"];
 
   const [load, setLoad] = useState(true);
   const [erro, setErro] = useState("");
@@ -44,14 +45,17 @@ function LoginForm() {
 
   const onSubmit = async (data) => {
     try {
+      setLoading(true)
       const response = await api.post("/login", {
         email: data.email,
         senha: data.senha,
       });
-      localStorage.setItem("arraySize", "0");
+      const numeroAleatorio = Math.floor(Math.random() * cores.length);
+      localStorage.setItem("arraySize", cores[numeroAleatorio]);
       console.log(response.data);
       await login(response.data.email, response.data.name);
-      localStorage.setItem("arraySize", "0");
+      setLoading(false)
+
       // navigate("/");
     } catch (error) {
       console.error("Erro ao fazer login:", error);
@@ -62,6 +66,8 @@ function LoginForm() {
       if (!error?.response) {
         setError("senha", { message: "Sem conexão  com a internet" })
       }
+      setLoading(false)
+
     }
   };
 
@@ -143,7 +149,12 @@ function LoginForm() {
                   type="submit"
                   className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                 >
-                  Entrar
+                  {loading ? <Spin indicator={<LoadingOutlined style={{ fontSize: 24, color: 'white' }} spin />} size="default" />
+                    :
+                    " Entrar"
+                  }
+
+
                 </button>
 
                 <Link to={"/cadastro"}

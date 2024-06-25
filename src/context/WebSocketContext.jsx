@@ -1,6 +1,8 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { websocket } from "../config/websocket";
 import { OnlinePredictionSharp } from "@mui/icons-material";
+import AvatarUser from "../components/AvatarUser";
+import { Contexto } from "./Contexto";
 
 export const ContextWebSocket = createContext(null)
 
@@ -8,7 +10,7 @@ export default function WebSocketProvider({ children }) {
     const [ws, setWs] = useState(null);
     const [messages, setMessages] = useState([]);
     const [websocketOpen, setWebsocketOpen] = useState(false);
-
+    const { user } = useContext(Contexto);
 
     useEffect(() => {
         const recoveryMessage = localStorage.getItem("messages");
@@ -97,12 +99,16 @@ export default function WebSocketProvider({ children }) {
             }}
         >
             {/* Mostra o status da conexão na tela */}
-            <span className={`${websocketOpen ? "text-green-400 animate-pulse" : "text-red-600"} font-extrabold text-3xl fixed top-0 right-4 bottom-0`}>
+            <div className=" hidden md:block font-extrabold text-xl 2xl::text-md  text-gray-700 fixed top-2 right-4 bottom-0">
 
-                {websocketOpen ? "Online " : "Tentando reconectar..."}
-                <OnlinePredictionSharp focusable />
-
-            </span>
+                {
+                    user?.nome &&
+                    <div className="flex gap-2 items-center justify-center">
+                        <span>{user?.nome}</span>
+                        <AvatarUser name={user?.nome[0]?.toUpperCase()} />
+                    </div>
+                }
+            </div>
             {children}
         </ContextWebSocket.Provider>
     );

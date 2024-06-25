@@ -3,12 +3,25 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300&family=Roboto:wght@300&display=swap');
-*{
+
+* {
     font-family: 'Inter', sans-serif;
     font-family: 'Roboto', sans-serif;
 }
+
 html {
     scroll-behavior: smooth;
     background-color: #F5F5F5;
-  }
-  
+}
+
+.gradient-background {
+    background: hsla(213, 43%, 96%, 1);
+
+    background: linear-gradient(135deg, hsla(213, 43%, 96%, 1) 0%, hsla(0, 0%, 100%, 1) 28%, hsla(213, 43%, 96%, 1) 50%, hsla(0, 0%, 100%, 1) 86%, hsla(0, 0%, 100%, 1) 100%);
+
+    background: -moz-linear-gradient(135deg, hsla(213, 43%, 96%, 1) 0%, hsla(0, 0%, 100%, 1) 28%, hsla(213, 43%, 96%, 1) 50%, hsla(0, 0%, 100%, 1) 86%, hsla(0, 0%, 100%, 1) 100%);
+
+    background: -webkit-linear-gradient(135deg, hsla(213, 43%, 96%, 1) 0%, hsla(0, 0%, 100%, 1) 28%, hsla(213, 43%, 96%, 1) 50%, hsla(0, 0%, 100%, 1) 86%, hsla(0, 0%, 100%, 1) 100%);
+
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr="#F0F4F9", endColorstr="#FFFFFF", GradientType=1);
+}

@@ -7,9 +7,11 @@ import axios from "axios";
 import { Spin } from "antd";
 import { Contexto } from "../../context/Contexto";
 import { api } from "../../config/api";
+import { LoadingOutlined } from "@ant-design/icons";
 
 function SignupForm() {
   const { login } = useContext(Contexto);
+  const [loading, setLoading] = useState(false)
 
   const schema = yup.object().shape({
     nome: yup.string().required("Nome é obrigatório"),
@@ -17,13 +19,14 @@ function SignupForm() {
     senha: yup.string().required("Senha é obrigatória").min(6, "A senha deve ter pelo menos 6 caracteres"),
   });
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register,setError, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 
   const [load, setLoad] = useState(true);
   const [erro, setErro] = useState("");
   const navigate = useNavigate();
+  const cores = ["red", "blue", "green", "cyan", "orange", "purple", "yellow", "pink"];
 
   useEffect(() => {
     setTimeout(() => {
@@ -33,18 +36,27 @@ function SignupForm() {
 
   const onSubmit = async (data) => {
     try {
+      setLoading(true)
       const response = await api.post("/user", {
         nome: data.nome,
         email: data.email,
         senha: data.senha,
       });
-      localStorage.setItem("arraySize", "0");
+      const numeroAleatorio = Math.floor(Math.random() * cores.length);
+      localStorage.setItem("arraySize", cores[numeroAleatorio]);
       console.log(response.data);
       await login(response.data.email, response.data.name);
-      localStorage.setItem("arraySize", "0");
+    
+      setLoading(false)
+
     } catch (error) {
       console.error("Erro ao criar conta:", error);
       setErro("Erro ao criar conta. Por favor, tente novamente mais tarde.");
+      if (error?.response?.status === 400) {
+        setError("email", { message: "Conta já cadastrada" })
+      }
+      setLoading(false)
+
     }
   };
 
@@ -139,8 +151,13 @@ function SignupForm() {
                   type="submit"
                   className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                 >
-                  Criar Conta
+               {loading ? <Spin indicator={<LoadingOutlined style={{ fontSize: 24, color: 'white' }} spin />} size="default" />
+                    :
+                    "   Criar Conta"
+                  }
                 </button>
+               
+
               </div>
             </form>
           </div>

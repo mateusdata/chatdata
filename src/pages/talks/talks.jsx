@@ -120,7 +120,7 @@ function Talks() {
                   </Popover>
 
                   <div className="flex w-full justify-between items-end gap-2">
-                    <p className="text-blue-500 p-0">
+                  <p className={`${user.user_color ? `text-${user.user_color}` : 'text-blue-500'}`}>
                       {!(user.nome === item.currentUser)
                         ? item.currentUser
                         : "Voce"}
@@ -162,7 +162,7 @@ function Talks() {
                       <pre className="whitespace-pre-wrap">{item.talk}</pre>
                     )}
                   </div>
-                  <div className="flex w-full justify-end items-end">
+                  <div className="flex w-full text-[10px] justify-end items-end">
                     <p className="text-gray-1000">{item.time}</p>
                   </div>
                 </div>
