@@ -1,2 +1,2 @@
-export const websocket =  'wss://present-gabbey-mateusdata-fefbff92.koyeb.app'
+export const websocket =  'wss://chatdataapi-z30b6nzm.b4a.run'
 //export const websocket =  'ws://192.168.10.108:3001'
